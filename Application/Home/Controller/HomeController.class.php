@@ -24,6 +24,10 @@ class HomeController extends CommonController{
             $this->error('站点已经关闭，请稍后访问~');
         }
 
+
+        $this->is_login();
+        // exit;
+
         $this->assign('meta_keywords', C('WEB_SITE_KEYWORD'));
         $this->assign('meta_description', C('WEB_SITE_DESCRIPTION'));
         $this->assign('__USER__', session('user_auth')); //用户登录信息
@@ -43,8 +47,7 @@ class HomeController extends CommonController{
         if($uid){
             return $uid;
         }else{
-            $data['login'] = 1;
-            $this->error('请先登陆', U('Home/User/login'), $data);
+            $this->redirect('Home/Public/login');
         }
     }
 
