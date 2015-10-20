@@ -28,9 +28,41 @@ class IndexController extends HomeController{
                 'qq' => trim(I('qq')),
                 'weixin' => trim(I('weixin'))
             );
-            
+
+            if(!$data['class_name']){
+                $this->error('原所在班级不能为空!');
+            }
+
+            if(!$data['address']){
+                $this->error('通信地址不能为空!');
+            }
+
+            if(!$data['phone']){
+                $this->error('手机号码不能为空!');
+            }
+
+            if(11 != strlen($data['phone'])){
+                $this->error('手机号码不格式不正确!');
+            }
+
+            if(!$data['email']){
+                $this->error('邮箱不能为空!');
+            }
+
+            if(!filter_var($data['email'], FILTER_VALIDATE_EMAIL)){
+                $this->error('邮箱格式不正确!');
+            }
+
+            if(!$data['qq']){
+                $this->error('QQ号码不能为空!');
+            }
+
+            if(!$data['weixin']){
+                $this->error('微信号不能为空!');
+            }
 
             $user_object = D('Student');
+
             if($user_object->save($data) ){
                 $this->success('更新成功', U('index'));
             }else{
