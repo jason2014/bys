@@ -161,7 +161,11 @@
 
           <tr>
             <th>通信地址</th>
-            <td colspan="3">{$model.prov}-{$model.city}-{$model.dist}-{$model.address}</td>
+            <td colspan="3">
+            <php>if($model['address']){</php>
+            {$model.prov}-{$model.city}-{$model.dist}-{$model.address}
+            <php>}</php>
+            </td>
           </tr>
 
           <tr>
