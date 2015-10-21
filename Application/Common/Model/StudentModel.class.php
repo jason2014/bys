@@ -11,14 +11,15 @@ class StudentModel extends Model{
         //去除前后空格
         $username = trim($username);
 
-        $map['name'] = array('eq', $username); //用户名登陆
-        $map['idcardtype'] = array('eq', $password);
+        $map['name'] = array('eq', $password); //用户名登陆
+        $map['idcardtype'] = array('eq', $username);
 
         $user = $this->where($map)->find(); //查找用户
+
         if(!$user){
             $this->error = '用户不存在或被禁用！';
         }else{
-            if($password !== $user['idcardtype']){
+            if($password !== $user['name']){
                 $this->error = '密码错误！';
             }else{
                 //更新登录信息

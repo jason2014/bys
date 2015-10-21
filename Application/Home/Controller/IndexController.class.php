@@ -89,6 +89,6 @@ class IndexController extends HomeController{
     public function logout(){
         session('user_auth', null);
         session('user_auth_sign', null);
-        $this->success('退出成功！', 'Public/login');
+        $this->success('退出成功！', U('Home/Public/login'));
     }
 }

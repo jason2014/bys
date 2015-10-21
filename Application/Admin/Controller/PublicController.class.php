@@ -21,10 +21,7 @@ class PublicController extends Controller{
         if(IS_POST){
             $username = I('username');
             $password = I('password');
-            //图片验证码校验
-            if(!$this->check_verify(I('post.verify'))){
-                $this->error('验证码输入错误！');
-            }
+
             $map['group'] = array('egt', 1); //后台部门
             $user_object = D('User');
             $uid = $user_object->login($username, $password, $map);
