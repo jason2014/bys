@@ -33,7 +33,7 @@ class IndexController extends HomeController{
                 $this->error('原所在班级不能为空!');
             }
 
-            if(!$data['dist']){
+            if(!$data['city']){
                 $this->error('通省市区不能为空!');
             }
             

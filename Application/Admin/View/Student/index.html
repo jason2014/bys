@@ -1,0 +1,104 @@
+<extend name="_Layout/main"/>
+
+<block name="container">
+    <div class="container">
+        <div class="panel-heading" style="padding-left:0;">
+            <form id="search-form" action="{:U('')}" class="form-inline" method="get">
+                <div class="form-group">
+                    <input type="text" style="width:180px;" class="form-control" name="name" value="{$critera.name}" placeholder="姓名">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" style="width:180px;" class="form-control" name="idcardtype" value="{$critera.idcardtype}" placeholder="身份证">
+                </div>
+
+                <div class="form-group">
+                    <select class="form-control" style="width:180px;" name="major">
+                        <option value="">全部专业</optiion>
+                        <foreach name="majorList" item="vo">
+                            <if condition="($criteria['major'] eq $vo['name'])">
+                                <option value="{$vo.name}" selected="selected">{$vo.name}</option>
+                            <else />
+                                <option value="{$vo.name}">{$vo.name}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div> 
+
+                <div class="form-group">
+                    <select class="form-control" style="width:180px;" name="endtime">
+                        <option value="">全部毕业年份</optiion>
+                        <foreach name="endtimes" item="vo">
+                            <if condition="($criteria['endtime'] eq $vo['name'])">
+                                <option value="{$vo.name}" selected="selected">{$vo.name}年</option>
+                            <else />
+                                <option value="{$vo.name}">{$vo.name}年</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div> 
+
+                <a class="btn btn-primary" href="javascript:;" id="search" url={:u('index')}>搜索</a>
+                <a class="btn btn-default" href={:U('index')}>重置</a>
+            </form>
+            </div>
+            <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>身份证</th>
+                    <th>专业</th>
+                    <th>类别</th>
+                    <th>培养层次</th>
+                    <th>毕业日期</th>
+                    <th>原所在班级</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <foreach name="data" item='vo'>
+                <tr>
+                    <td>{$vo.id}</td>    
+                    <td>{$vo.name}</td>    
+                    <td>{$vo.gender}</td>    
+                    <td>{$vo.idcardtype}</td>
+                    <td>{$vo.major}</td>    
+                    <td>{$vo.type}</td>    
+                    <td>{$vo.education}</td>    
+                    <td>{$vo.endtime}</td>    
+                    <td>{$vo.class_name}</td>    
+                    <td>
+                       <a class="label label-info" href="{:U('view', array('id'=>$vo['id']))}">查看</a> 
+                    </td>
+                </tr>
+                </foreach>
+            </tbody>
+        </table>
+        <div class="pagination" style="margin: 0;">         <span style="display: inline-block; height: 34px; line-height: 34px; float: left; margin-right:20px; ">总人数： {$total} 个</span>{$pageShow}</div>
+    </div>
+</block>
+
+<block name="libs">
+    <script type="text/javascript">
+    $(document).ready(function() {
+        //搜索功能
+        $("#search").click(function(){
+            var url = $(this).attr('url');
+            var query  = $('#search-form').serialize();
+
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+            query = query.replace(/^&/g,'');
+            if(url.indexOf('?')>0){
+                url += '&' + query;
+            }else{
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+
+
+    });
+    </script>
+</block>

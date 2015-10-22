@@ -18,30 +18,33 @@ class IndexController extends AdminController{
      * @author jry <598821125@qq.com>
      */
     public function index(){
-        //计算统计图日期
-        $today = strtotime(date('Y-m-d', time())); //今天
-        $start_date = I('get.start_date') ? I('get.start_date')/1000 : $today-14*86400;
-        $end_date   = I('get.end_date') ? (I('get.end_date')+1)/1000 : $today+86400;
-        $count_day  = ($end_date-$start_date)/86400; //查询最近n天
-        $user_object = D('User');
-        for($i = 0; $i < $count_day; $i++){
-            $day = $start_date + $i*86400; //第n天日期
-            $day_after = $start_date + ($i+1)*86400; //第n+1天日期
-            $map['ctime'] = array(
-                array('egt', $day),
-                array('lt', $day_after)
-            );
-            $user_reg_date[] = date('m月d日', $day);
-            $user_reg_count[] = (int)$user_object->where($map)->count();
-        }
+        $dataEnd = array();
+        $data = array();
 
-        $this->assign('start_date', date('Y年m月d日', $start_date));
-        $this->assign('end_date', date('Y年m月d日', $end_date-1));
-        $this->assign('count_day', $count_day);
-        $this->assign('user_reg_date', json_encode($user_reg_date));
-        $this->assign('user_reg_count', json_encode($user_reg_count));
-        $this->assign('meta_title', "首页");
-        $this->display('');
+        $db = D('Student');
+
+        $endtimeList = $db->field('LEFT(endtime,4) AS name, COUNT(`id`) AS total')->group('LEFT(endtime,4)')->select();
+
+        $dataList = $db->field('LEFT(endtime,4) AS name,COUNT(`id`) AS total')->where('class_name !=""')->group('LEFT(endtime,4)')->select();
+
+        foreach ($dataList as $v) {
+            $dataEnd[$v['name']] = $v['total'];
+        }
+        
+        foreach($endtimeList as $v){
+            $data['labels'] .= '"'.$v['name'].'年",';
+            $data['datasetsStart'] .= $v['total'].',';
+            $data['datasetsEnd'] .= $dataEnd[$v['name']] ? $dataEnd[$v['name']].',' : '0,';
+        }
+        $data['labels'] = rtrim($data['labels'], ',');
+
+        $data['datasetsStart'] = rtrim($data['datasetsStart'], ',');
+        $data['datasetsEnd'] = rtrim($data['datasetsEnd'], ',');
+
+        $this->assign('data', $data);
+        $this->assign('start_date', $endtimeList[0]['name'].'年');
+        $this->assign('end_date', $endtimeList[count($endtimeList)-1]['name'].'年');
+        $this->display();
     }
 
     /**
