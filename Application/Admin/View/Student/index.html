@@ -70,7 +70,7 @@
                     <td>{$vo.endtime}</td>    
                     <td>{$vo.class_name}</td>    
                     <td>
-                       <a class="label label-info" href="{:U('view', array('id'=>$vo['id']))}">查看</a> 
+                       <a class="label label-info a-view" data-url="{:U('view', array('id'=>$vo['id']))}" href="javascript:void(0);">查看</a> 
                     </td>
                 </tr>
                 </foreach>
@@ -81,6 +81,7 @@
 </block>
 
 <block name="libs">
+    <script type="text/javascript" src="__PUBLIC__/libs/layer/layer/layer.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
         //搜索功能
@@ -98,6 +99,18 @@
             window.location.href = url;
         });
 
+        //view
+        $('.a-view').click(function(){
+            var url = $(this).attr('data-url');
+            layer.open({
+                type: 2,
+                title: '毕业生个人信息',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['60%', '60%'],
+                content: url //iframe的url
+            }); 
+        });
 
     });
     </script>

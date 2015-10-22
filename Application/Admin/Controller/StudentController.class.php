@@ -63,6 +63,11 @@ class StudentController extends AdminController{
         $this->display();
     }
 
+    public function view($id){
+        $model = M('Student')->where(array('id'=>$id))->find();
 
+        $this->assign('model', $model);
+        $this->display();
+    }
 
 }
